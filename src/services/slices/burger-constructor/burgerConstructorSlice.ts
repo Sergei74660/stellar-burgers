@@ -84,6 +84,9 @@ export const burgerConstructorSlice = createSlice({
         ingredients: []
       };
       state.orderModalData = null;
+    },
+    clearOrderData: (state) => {
+      state.orderModalData = null;
     }
   },
   extraReducers: (builder) => {
@@ -97,6 +100,10 @@ export const burgerConstructorSlice = createSlice({
       .addCase(orderBurger.fulfilled, (state, action) => {
         state.orderModalData = action.payload.order;
         state.orderRequest = false;
+        state.constructorItems = {
+          bun: null,
+          ingredients: []
+        };
       });
   }
 });
@@ -107,7 +114,8 @@ export const {
   removeIngredient,
   moveUpIngredient,
   moveDownIngredient,
-  clearConstructorItems
+  clearConstructorItems,
+  clearOrderData
 } = burgerConstructorSlice.actions;
 
 export const { getConstructorItems, getOrderRequest, getOrderModalData } =

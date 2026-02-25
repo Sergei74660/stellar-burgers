@@ -1,21 +1,24 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
+import { useDispatch, useSelector } from '../../services/store';
+import { getOrder } from '../../services/slices/orders/ordersSlice';
+import { fetchOrder } from '../../services/slices/orders/ordersThunks';
+import { getAllIngredients } from '../../services/slices/burger-ingredients/burgerIngredientsSlice';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
-  const orderData = {
-    createdAt: '',
-    ingredients: [],
-    _id: '',
-    status: '',
-    name: '',
-    updatedAt: 'string',
-    number: 0
-  };
+  const { number } = useParams(); // номер заказа из адресной строки
+  const dispatch = useDispatch(); // функция для вызова экшенов
+  const orderData = useSelector(getOrder); // данные заказа из стора
+  const ingredients: TIngredient[] = useSelector(getAllIngredients); // все ингредиенты
 
-  const ingredients: TIngredient[] = [];
+  // загружаем заказ при монтировании
+  useEffect(() => {
+    dispatch(fetchOrder(Number(number)));
+  }, []);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {

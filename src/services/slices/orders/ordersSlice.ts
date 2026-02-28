@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 import { fetchOrder, fetchProfileOrders } from './ordersThunks';
 
-type TOrdersState = {
+export type TOrdersState = {
   orders: TOrder[];
   order: TOrder | null;
   isLoading: boolean;
@@ -25,8 +25,12 @@ export const ordersSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProfileOrders.pending, () => {})
-      .addCase(fetchProfileOrders.rejected, () => {})
+      .addCase(fetchProfileOrders.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchProfileOrders.rejected, (state) => {
+        state.isLoading = false;
+      })
       .addCase(fetchProfileOrders.fulfilled, (state, action) => {
         state.orders = action.payload;
       })

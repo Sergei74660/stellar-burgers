@@ -2,8 +2,7 @@ import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
 import { orderBurger } from './burgerConstructorThunks';
 
-// типизация состояния конструктора
-type TBurgerConstructorState = {
+export type TBurgerConstructorState = {
   constructorItems: {
     bun: TIngredient | null;
     ingredients: TConstructorIngredient[];
@@ -12,7 +11,6 @@ type TBurgerConstructorState = {
   orderModalData: TOrder | null;
 };
 
-// начальное состояние
 const initialState: TBurgerConstructorState = {
   constructorItems: {
     bun: null,
@@ -26,9 +24,9 @@ export const burgerConstructorSlice = createSlice({
   name: 'burgerConstructor',
   initialState,
   selectors: {
-    getConstructorItems: (state) => state.constructorItems, // получить ингредиенты
-    getOrderRequest: (state) => state.orderRequest, // статус заказа
-    getOrderModalData: (state) => state.orderModalData // данные заказа
+    getConstructorItems: (state) => state.constructorItems,
+    getOrderRequest: (state) => state.orderRequest,
+    getOrderModalData: (state) => state.orderModalData
   },
   reducers: {
     setBun(state, action: PayloadAction<TIngredient>) {
@@ -78,14 +76,7 @@ export const burgerConstructorSlice = createSlice({
 
       state.constructorItems.ingredients.splice(newIndex, 0, movedItem);
     },
-    clearConstructorItems: (state) => {
-      state.constructorItems = {
-        bun: null,
-        ingredients: []
-      };
-      state.orderModalData = null;
-    },
-    clearOrderData: (state) => {
+    clearOrderModalData: (state) => {
       state.orderModalData = null;
     }
   },
@@ -114,8 +105,7 @@ export const {
   removeIngredient,
   moveUpIngredient,
   moveDownIngredient,
-  clearConstructorItems,
-  clearOrderData
+  clearOrderModalData
 } = burgerConstructorSlice.actions;
 
 export const { getConstructorItems, getOrderRequest, getOrderModalData } =

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
 import { loginUser, logoutUser, registerUser, updateUser } from './userThunks';
 
-type TAuthSliceState = {
+export type TAuthSliceState = {
   user: TUser | null;
   isAuthChecked: boolean; // флаг для статуса проверки токена пользователя
   isAuthenticated: boolean;
@@ -42,10 +42,12 @@ export const userSlice = createSlice({
       .addCase(registerUser.pending, (state) => {
         state.error = undefined;
       })
-      .addCase(registerUser.rejected, (state) => {
+      .addCase(registerUser.rejected, (state, action) => {
         state.isAuthChecked = true;
+        state.error = action.error.message;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
+        state.error = undefined;
         state.user = action.payload.user;
         state.isAuthChecked = true;
       })
@@ -58,6 +60,7 @@ export const userSlice = createSlice({
         state.isAuthChecked = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
+        state.error = undefined;
         state.user = action.payload.user;
         state.isAuthChecked = true;
         state.isAuthenticated = true;

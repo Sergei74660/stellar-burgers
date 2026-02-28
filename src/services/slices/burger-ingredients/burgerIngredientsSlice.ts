@@ -7,13 +7,11 @@ import {
 } from '../../../utils/ingredient';
 import { fetchBurgerIngredients } from './burgerIngredientsThunks';
 
-// типизация состояния ингредиентов
-type TBurgerIngredientsState = {
+export type TBurgerIngredientsState = {
   all: TIngredient[];
   isIngredientsLoading: boolean;
 };
 
-// начальное состояние
 const initialState: TBurgerIngredientsState = {
   all: [],
   isIngredientsLoading: false
@@ -55,4 +53,3 @@ export const {
   getIsIngredientsLoading,
   getIngredientById
 } = burgerIngredientsSlice.selectors;
-export const reducer = burgerIngredientsSlice.reducer;

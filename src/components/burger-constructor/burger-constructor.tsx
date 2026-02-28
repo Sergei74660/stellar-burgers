@@ -4,7 +4,7 @@ import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useDispatch, useSelector } from '../../services/store';
 import {
-  clearOrderData,
+  clearOrderModalData,
   getConstructorItems,
   getOrderModalData,
   getOrderRequest
@@ -40,9 +40,8 @@ export const BurgerConstructor: FC = () => {
   };
 
   const closeOrderModal = () => {
-    dispatch(clearOrderData());
+    dispatch(clearOrderModalData());
   };
-
   // считаем общую стоимость (булка считается дважды)
   const price = useMemo(
     () =>

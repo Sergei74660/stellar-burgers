@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 import { fetchFeeds } from './feedsThunks';
 
-type TFeedsState = {
+export type TFeedsState = {
   orders: TOrder[];
   currentOrder: TOrder | null;
   total: number;
@@ -26,8 +26,6 @@ export const feedsSlice = createSlice({
   reducers: {},
   selectors: {
     getFeedOrders: (sliceState) => sliceState.orders,
-    getOrderByNumber: (sliceState) => (targetNumber: number) =>
-      sliceState.orders.find(({ number }) => number === targetNumber),
     getFeed: (sliceState) => ({
       total: sliceState.total,
       totalToday: sliceState.totalToday
@@ -37,6 +35,7 @@ export const feedsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchFeeds.pending, (state) => {
+        state.error = undefined;
         state.isLoading = true;
       })
       .addCase(fetchFeeds.rejected, (state, action) => {
@@ -44,6 +43,7 @@ export const feedsSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchFeeds.fulfilled, (state, action) => {
+        state.error = undefined;
         state.orders = action.payload.orders;
         state.total = action.payload.total;
         state.totalToday = action.payload.totalToday;
@@ -52,5 +52,5 @@ export const feedsSlice = createSlice({
   }
 });
 
-export const { getFeedOrders, getOrderByNumber, getFeed, getFeedsIsLoading } =
+export const { getFeedOrders, getFeed, getFeedsIsLoading } =
   feedsSlice.selectors;
